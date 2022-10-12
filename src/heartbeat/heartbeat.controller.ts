@@ -8,7 +8,7 @@ export class HeartbeatController {
   constructor(private heartbeatService: HeartbeatService) {}
   @Get()
   findAll(@Param('group') group: string) {
-    return this.heartbeatService.getHeartbeats(group);
+    return this.heartbeatService.getAllByGroup(group);
   }
 
   @Post(':id')
@@ -16,11 +16,11 @@ export class HeartbeatController {
     @Param('id') id: string,
     @Body() createHeartbeatDto: CreateHeartbeatDto,
   ): Promise<Heartbeat> {
-    return await this.heartbeatService.createHeartbeat(createHeartbeatDto, id);
+    return await this.heartbeatService.create(createHeartbeatDto, id);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
-    return `Deleted: ${id}`;
+  async delete(@Param('id') id: string): Promise<Heartbeat> {
+    return this.heartbeatService.delete(id);
   }
 }

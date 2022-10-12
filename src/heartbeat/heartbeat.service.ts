@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Heartbeat } from './entities/heartbeat.entity';
 import { CreateHeartbeatDto } from './dto/create-hearbeat.dto';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
 @Injectable()
 export class HeartbeatService {
   constructor(private prisma: PrismaService) {}
 
-  async createHeartbeat(
+  async create(
     createHeartbeatDto: CreateHeartbeatDto,
     id: string,
   ): Promise<Heartbeat> {
@@ -16,7 +17,20 @@ export class HeartbeatService {
     });
   }
 
-  async getHeartbeats(group: string): Promise<Heartbeat[]> {
+  async getAllByGroup(group: string): Promise<Heartbeat[]> {
     return await this.prisma.heartbeat.findMany({ where: { group: group } });
+  }
+
+  async delete(id: string): Promise<Heartbeat> {
+    try {
+      return await this.prisma.heartbeat.delete({ where: { heartbeatId: id } });
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === 'P2025') {
+          throw new NotFoundException(`heartbeat with ID ${id} not found`);
+        }
+      }
+      throw err;
+    }
   }
 }
