@@ -15,7 +15,7 @@ model Heartbeat {
   id            Int         @id @default(autoincrement())
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  heartbeatId   String
+  heartbeatId   String      @unique 
   group         String
   meta          String
 }
