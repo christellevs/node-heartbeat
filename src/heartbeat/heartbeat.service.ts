@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class HeartbeatService {
   constructor(private prisma: PrismaService) {}
 
-  getHeartbeats() {
-    return this.prisma.heartbeat.findMany();
+  getHeartbeats(group: string) {
+    return this.prisma.heartbeat.findMany({ where: { group: group } });
   }
 }

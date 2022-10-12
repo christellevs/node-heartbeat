@@ -7,7 +7,7 @@ export class HeartbeatController {
   constructor(private heartbeatService: HeartbeatService) {}
   @Get(':group')
   findAll(@Param('group') group: string) {
-    return this.heartbeatService.getHeartbeats();
+    return this.heartbeatService.getHeartbeats(group);
   }
 
   @Post(':id')
