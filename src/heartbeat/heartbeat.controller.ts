@@ -1,11 +1,13 @@
 import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
 import { CreateHeartbeatDto } from './dto/create-hearbeat.dto';
+import { HeartbeatService } from './heartbeat.service';
 
-@Controller('heartbeat')
+@Controller()
 export class HeartbeatController {
-  @Get()
+  constructor(private heartbeatService: HeartbeatService) {}
+  @Get(':group')
   findAll(@Param('group') group: string) {
-    return `This group ${group}`;
+    return this.heartbeatService.getHeartbeats(group);
   }
 
   @Post(':id')
