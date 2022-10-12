@@ -3,14 +3,14 @@ import { IsString } from 'class-validator';
 
 export class CreateHeartbeatDto {
   @ApiProperty({
-    description: 'The provided Instance ID',
+    description: 'The provided heartbeat ID',
     example: 'e335175a-eace-4a74-b99c-c6466b6afadd',
   })
   @IsString()
-  instanceId!: string;
+  heartbeatId!: string;
 
   @ApiProperty({
-    description: 'The name of the group the instance is part of',
+    description: 'The name of the group the heartbeat is part of',
     example: 'particle-detector',
   })
   @IsString()
