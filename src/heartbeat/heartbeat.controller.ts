@@ -1,21 +1,22 @@
 import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
 import { CreateHeartbeatDto } from './dto/create-hearbeat.dto';
 import { HeartbeatService } from './heartbeat.service';
+import { Heartbeat } from './entities/heartbeat.entity';
 
-@Controller()
+@Controller(':group')
 export class HeartbeatController {
   constructor(private heartbeatService: HeartbeatService) {}
-  @Get(':group')
+  @Get()
   findAll(@Param('group') group: string) {
     return this.heartbeatService.getHeartbeats(group);
   }
 
   @Post(':id')
-  create(
+  async createHeartbeat(
     @Param('id') id: string,
-    @Body() heartbeatDto: CreateHeartbeatDto,
-  ): string {
-    return `Group ID: ${id} - Group: ${heartbeatDto.group} - Meta: ${heartbeatDto.meta}`;
+    @Body() createHeartbeatDto: CreateHeartbeatDto,
+  ): Promise<Heartbeat> {
+    return await this.heartbeatService.createHeartbeat(createHeartbeatDto, id);
   }
 
   @Delete(':id')
