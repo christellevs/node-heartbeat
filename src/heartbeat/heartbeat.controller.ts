@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
 import { CreateHeartbeatDto } from './dto/create-hearbeat.dto';
 
-@Controller('heartbeat')
+@Controller()
 export class HeartbeatController {
-  @Get()
+  @Get(':group')
   findAll(@Param('group') group: string) {
     return `This group ${group}`;
   }
