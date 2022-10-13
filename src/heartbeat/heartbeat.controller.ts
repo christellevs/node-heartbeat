@@ -12,8 +12,12 @@ export class HeartbeatController {
     return this.heartbeatService.findAllByGroup(group);
   }
 
-  @Post()
-  create(@Body() createHeartbeatDto: CreateHeartbeatDto): Promise<Heartbeat> {
-    return this.heartbeatService.create(createHeartbeatDto);
+  @Post(':group/:id')
+  create(
+    @Param('group') group: string,
+    @Param('id') id: string,
+    @Body() createHeartbeatDto: CreateHeartbeatDto,
+  ): Promise<Heartbeat> {
+    return this.heartbeatService.create(group, id, createHeartbeatDto);
   }
 }

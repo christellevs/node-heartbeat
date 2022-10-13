@@ -15,8 +15,16 @@ export class HeartbeatService {
     return await this.heartbeatModel.find({ group: group });
   }
 
-  async create(heartbeat: Heartbeat): Promise<Heartbeat> {
-    const newHeartbeat = new this.heartbeatModel(heartbeat);
+  async create(
+    group: string,
+    id: string,
+    createHeartbeatDto: CreateHeartbeatDto,
+  ): Promise<Heartbeat> {
+    const newHeartbeat = new this.heartbeatModel({
+      group: group,
+      id: id,
+      ...createHeartbeatDto,
+    });
     return await newHeartbeat.save();
   }
 }
