@@ -26,6 +26,14 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Set up environment
+
+Create a .env file and add:
+
+```
+DATABASE_URL="mongodb+srv://cooluser:coolpassword@node-heartbeat.p1yr3un.mongodb.net/%3FretryWrites=true&w=majority"
+```
+
 ## Installation
 
 ```bash
