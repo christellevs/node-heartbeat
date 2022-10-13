@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsString } from 'class-validator';
 import { Meta } from './meta.entity';
-
 import { Type } from 'class-transformer';
 
 export class Heartbeat {

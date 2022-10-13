@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Heartbeat } from './entities/heartbeat.entity';
+import { Group } from './entities/group.entity';
 import { CreateHeartbeatDto } from './dto/create-hearbeat.dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { Model } from 'mongoose';
@@ -11,7 +12,7 @@ export class HeartbeatService {
     @InjectModel('Heartbeat') private readonly heartbeatModel: Model<Heartbeat>,
   ) {}
 
-  async findAllByGroup(group): Promise<Heartbeat[]> {
+  public async findAllByGroup(group): Promise<Heartbeat[]> {
     return await this.heartbeatModel.find({ group: group });
   }
 
@@ -34,7 +35,7 @@ export class HeartbeatService {
     return await this.heartbeatModel.findOneAndUpdate(query, update, options);
   }
 
-  async delete(group: string, id: string): Promise<Heartbeat> {
+  public async delete(group: string, id: string): Promise<Heartbeat> {
     try {
       return await this.heartbeatModel.remove({
         group: group,
@@ -50,5 +51,48 @@ export class HeartbeatService {
       }
       throw err;
     }
+  }
+
+  public async getSummary() {
+    var allGroups: Heartbeat[] = await this.findAllGroups();
+    var uniqueGroups = allGroups.map((g) => g.group);
+    uniqueGroups = [...new Set(uniqueGroups)];
+
+    var result = await Promise.all(
+      uniqueGroups.map(async (group) => {
+        const instances = await this.findGroupInstances(group);
+        const firstHeartbeat = await this.findFirstHeartbeat(group);
+        const latestHeartbeat = await this.findLatestHeartbeat(group);
+
+        return {
+          group: group,
+          instances: instances.toString(),
+          createdAt: firstHeartbeat.map((beat) => beat.createdAt)[0],
+          lastUpdatedAt: latestHeartbeat.map((beat) => beat.updatedAt)[0],
+        };
+      }),
+    );
+
+    return result;
+  }
+
+  private async findGroupInstances(group: string) {
+    return await this.heartbeatModel.find({ group: group }).count();
+  }
+
+  private async findFirstHeartbeat(group: string) {
+    return await this.heartbeatModel
+      .find({ group: group })
+      .sort({ createdAt: 1 });
+  }
+
+  private async findLatestHeartbeat(group: string) {
+    return await this.heartbeatModel
+      .find({ group: group })
+      .sort({ updatedAt: -1 });
+  }
+
+  private async findAllGroups(): Promise<Heartbeat[]> {
+    return await this.heartbeatModel.find();
   }
 }
