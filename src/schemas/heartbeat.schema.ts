@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import config from './heartbeat.schema.config';
 
 export const MetaSchema = new mongoose.Schema({
   foo: { type: String, required: true },
@@ -12,7 +13,7 @@ export const HeartbeatSchema = new mongoose.Schema({
     type: Date,
     required: true,
     default: Date.now,
-    expires: 60,
+    expires: config.EXPIRY_INTERVAL,
   },
   meta: { type: MetaSchema, required: true },
 });
