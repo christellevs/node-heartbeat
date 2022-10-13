@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { HeartbeatController } from './heartbeat.controller';
-import { PrismaModule } from '../prisma/prisma.module';
 import { HeartbeatService } from './heartbeat.service';
+import { HeartbeatSchema } from '../schemas/heartbeat.schema';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [
+    MongooseModule.forFeature([{ name: 'Heartbeat', schema: HeartbeatSchema }]),
+  ],
   controllers: [HeartbeatController],
   providers: [HeartbeatService],
 })

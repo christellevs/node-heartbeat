@@ -1,7 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsInt, IsUrl } from 'class-validator';
+import { Prop, Schema } from '@nestjs/mongoose';
+
 import { Type } from 'class-transformer';
 
+@Schema
 export class Heartbeat {
   @ApiProperty({
     description: 'The automatically generated ID of the heartbeat in the db',
