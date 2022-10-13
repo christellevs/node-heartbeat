@@ -20,4 +20,12 @@ export class HeartbeatController {
   ): Promise<Heartbeat> {
     return this.heartbeatService.create(group, id, createHeartbeatDto);
   }
+
+  @Delete(':group/:id')
+  delete(
+    @Param('group') group: string,
+    @Param('id') id: string,
+  ): Promise<Heartbeat> {
+    return this.heartbeatService.delete(group, id);
+  }
 }

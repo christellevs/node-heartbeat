@@ -27,4 +27,11 @@ export class HeartbeatService {
     });
     return await newHeartbeat.save();
   }
+
+  async delete(group: string, id: string): Promise<Heartbeat> {
+    return await this.heartbeatModel.remove({
+      group: group,
+      id: id,
+    });
+  }
 }
