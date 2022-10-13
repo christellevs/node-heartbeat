@@ -20,12 +20,18 @@ export class HeartbeatService {
     id: string,
     createHeartbeatDto: CreateHeartbeatDto,
   ): Promise<Heartbeat> {
-    const newHeartbeat = new this.heartbeatModel({
-      group: group,
-      id: id,
-      ...createHeartbeatDto,
-    });
-    return await newHeartbeat.save();
+    const query = { id: id, group: group };
+    const update = {
+      $set: {
+        id: id,
+        group: group,
+        ...createHeartbeatDto,
+        updatedAt: new Date(),
+      },
+    };
+    const options = { upsert: true, new: true };
+
+    return await this.heartbeatModel.findOneAndUpdate(query, update, options);
   }
 
   async delete(group: string, id: string): Promise<Heartbeat> {
