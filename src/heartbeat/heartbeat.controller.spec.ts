@@ -1,14 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HeartbeatController } from './heartbeat.controller';
 import { HeartbeatService } from './heartbeat.service';
+import { CreateHeartbeatDto } from './dto/create-hearbeat.dto';
 import { Meta } from './entities/meta.entity';
 
 describe('HeartbeatController', () => {
   let controller: HeartbeatController;
-  let dto = { meta: { foo: '1' } };
-  let id = '123-123';
-  let group = 'desperados';
-  let instances = 1;
+  let meta: Meta = { foo: '1' };
+  let dto: CreateHeartbeatDto = { meta: meta };
+  let id: string = '123-123';
+  let group: string = 'desperados';
+  let instances: number = 1;
 
   const mockHeartbeatService = {
     create: jest.fn((group, id, dto) => {
