@@ -3,7 +3,7 @@ import { CreateHeartbeatDto } from './dto/create-hearbeat.dto';
 import { HeartbeatService } from './heartbeat.service';
 import { Heartbeat } from './entities/heartbeat.entity';
 
-@Controller(':group')
+@Controller()
 export class HeartbeatController {
   constructor(private heartbeatService: HeartbeatService) {}
   @Get()
@@ -11,16 +11,21 @@ export class HeartbeatController {
     return this.heartbeatService.getAllByGroup(group);
   }
 
-  @Post(':id')
+  @Post(':group/:id')
   async createHeartbeat(
-    @Param('id') id: string,
+    @Param('group') group: string,
+    @Param('id')
+    id: string,
     @Body() createHeartbeatDto: CreateHeartbeatDto,
   ): Promise<Heartbeat> {
-    return await this.heartbeatService.create(createHeartbeatDto, id);
+    return await this.heartbeatService.create(createHeartbeatDto, group, id);
   }
 
-  @Delete(':id')
-  async delete(@Param('id') id: string): Promise<Heartbeat> {
+  @Delete(':group/:id')
+  async delete(
+    @Param('group') group: string,
+    @Param('id') id: string,
+  ): Promise<Heartbeat> {
     return this.heartbeatService.delete(id);
   }
 }

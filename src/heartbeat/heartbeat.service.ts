@@ -10,10 +10,11 @@ export class HeartbeatService {
 
   async create(
     createHeartbeatDto: CreateHeartbeatDto,
+    group: string,
     id: string,
   ): Promise<Heartbeat> {
     return await this.prisma.heartbeat.create({
-      data: { heartbeatId: id, ...createHeartbeatDto },
+      data: { heartbeatId: id, group: group, ...createHeartbeatDto },
     });
   }
 
