@@ -2,30 +2,36 @@ import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
 import { CreateHeartbeatDto } from './dto/create-hearbeat.dto';
 import { HeartbeatService } from './heartbeat.service';
 import { Heartbeat } from './entities/heartbeat.entity';
+import { Group } from './entities/group.entity';
 
 @Controller()
 export class HeartbeatController {
   constructor(private heartbeatService: HeartbeatService) {}
+
   @Get()
-  findAll(@Param('group') group: string) {
-    return this.heartbeatService.getAllByGroup(group);
+  public summary() {
+    return this.heartbeatService.getSummary();
+  }
+
+  @Get(':group')
+  public findAllByGroup(@Param('group') group: string): Promise<Heartbeat[]> {
+    return this.heartbeatService.findAllByGroup(group);
   }
 
   @Post(':group/:id')
-  async createHeartbeat(
+  public create(
     @Param('group') group: string,
-    @Param('id')
-    id: string,
+    @Param('id') id: string,
     @Body() createHeartbeatDto: CreateHeartbeatDto,
   ): Promise<Heartbeat> {
-    return await this.heartbeatService.create(createHeartbeatDto, group, id);
+    return this.heartbeatService.create(group, id, createHeartbeatDto);
   }
 
   @Delete(':group/:id')
-  async delete(
+  public delete(
     @Param('group') group: string,
     @Param('id') id: string,
   ): Promise<Heartbeat> {
-    return this.heartbeatService.delete(id);
+    return this.heartbeatService.delete(group, id);
   }
 }
