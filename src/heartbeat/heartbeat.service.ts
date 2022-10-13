@@ -14,4 +14,9 @@ export class HeartbeatService {
   async findAllByGroup(group): Promise<Heartbeat[]> {
     return await this.heartbeatModel.find({ group: group });
   }
+
+  async create(heartbeat: Heartbeat): Promise<Heartbeat> {
+    const newHeartbeat = new this.heartbeatModel(heartbeat);
+    return await newHeartbeat.save();
+  }
 }

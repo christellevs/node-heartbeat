@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
+import { Meta } from '../entities/meta.entity';
 
 export class CreateHeartbeatDto {
   @ApiProperty({
@@ -7,7 +8,7 @@ export class CreateHeartbeatDto {
     example: 'e335175a-eace-4a74-b99c-c6466b6afadd',
   })
   @IsString()
-  heartbeatId!: string;
+  id!: string;
 
   @ApiProperty({
     description: 'The name of the group the heartbeat is part of',
@@ -16,10 +17,14 @@ export class CreateHeartbeatDto {
   @IsString()
   group!: string;
 
+  createdAt: Date;
+
+  updatedAt: Date;
+
   @ApiProperty({
     description: 'Meta information attached to request body',
     example: '{ "foo": 1 }',
   })
   @IsString()
-  meta!: string;
+  meta: Meta;
 }

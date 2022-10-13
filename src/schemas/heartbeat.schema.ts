@@ -5,7 +5,7 @@ export const MetaSchema = new mongoose.Schema({
 });
 
 export const HeartbeatSchema = new mongoose.Schema({
-  _id: String,
+  id: String,
   group: String,
   createdAt: Date,
   updatedAt: Date,
