@@ -53,7 +53,7 @@ export class HeartbeatService {
     }
   }
 
-  public async getSummary() {
+  public async getSummary(): Promise<Group[]> {
     try {
       var allGroups: Heartbeat[] = await this.findAllGroups();
       var uniqueGroups = allGroups.map((g) => g.group);
@@ -62,8 +62,8 @@ export class HeartbeatService {
       var result = await Promise.all(
         uniqueGroups.map(async (group) => {
           const instances = await this.findGroupInstances(group);
-          const firstHeartbeat = await this.findFirstHeartbeat(group);
-          const latestHeartbeat = await this.findLatestHeartbeat(group);
+          const firstHeartbeat = await this.getSortedCreatedAt(group);
+          const latestHeartbeat = await this.getSortedUpdatedAt(group);
 
           if (instances > 0) {
             return {
@@ -81,17 +81,17 @@ export class HeartbeatService {
     }
   }
 
-  private async findGroupInstances(group: string) {
+  private async findGroupInstances(group: string): Promise<number> {
     return await this.heartbeatModel.find({ group: group }).count();
   }
 
-  private async findFirstHeartbeat(group: string) {
+  private async getSortedCreatedAt(group: string): Promise<Heartbeat[]> {
     return await this.heartbeatModel
       .find({ group: group })
       .sort({ createdAt: 1 });
   }
 
-  private async findLatestHeartbeat(group: string) {
+  private async getSortedUpdatedAt(group: string): Promise<Heartbeat[]> {
     return await this.heartbeatModel
       .find({ group: group })
       .sort({ updatedAt: -1 });

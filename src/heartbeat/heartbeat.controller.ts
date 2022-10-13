@@ -9,7 +9,7 @@ export class HeartbeatController {
   constructor(private heartbeatService: HeartbeatService) {}
 
   @Get()
-  public summary() {
+  public summary(): Promise<Group[]> {
     return this.heartbeatService.getSummary();
   }
 
