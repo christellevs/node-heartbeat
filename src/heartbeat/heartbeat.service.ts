@@ -54,26 +54,29 @@ export class HeartbeatService {
   }
 
   public async getSummary() {
-    var allGroups: Heartbeat[] = await this.findAllGroups();
-    var uniqueGroups = allGroups.map((g) => g.group);
-    uniqueGroups = [...new Set(uniqueGroups)];
+    try {
+      var allGroups: Heartbeat[] = await this.findAllGroups();
+      var uniqueGroups = allGroups.map((g) => g.group);
+      uniqueGroups = [...new Set(uniqueGroups)];
 
-    var result = await Promise.all(
-      uniqueGroups.map(async (group) => {
-        const instances = await this.findGroupInstances(group);
-        const firstHeartbeat = await this.findFirstHeartbeat(group);
-        const latestHeartbeat = await this.findLatestHeartbeat(group);
+      var result = await Promise.all(
+        uniqueGroups.map(async (group) => {
+          const instances = await this.findGroupInstances(group);
+          const firstHeartbeat = await this.findFirstHeartbeat(group);
+          const latestHeartbeat = await this.findLatestHeartbeat(group);
 
-        return {
-          group: group,
-          instances: instances.toString(),
-          createdAt: firstHeartbeat.map((beat) => beat.createdAt)[0],
-          lastUpdatedAt: latestHeartbeat.map((beat) => beat.updatedAt)[0],
-        };
-      }),
-    );
-
-    return result;
+          return {
+            group: group,
+            instances: instances.toString(),
+            createdAt: firstHeartbeat.map((beat) => beat.createdAt)[0],
+            lastUpdatedAt: latestHeartbeat.map((beat) => beat.updatedAt)[0],
+          };
+        }),
+      );
+      return result;
+    } catch (e) {
+      throw new Error(`Unable to get groups summary: ${e}`);
+    }
   }
 
   private async findGroupInstances(group: string) {
