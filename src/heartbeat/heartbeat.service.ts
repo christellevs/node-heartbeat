@@ -35,9 +35,20 @@ export class HeartbeatService {
   }
 
   async delete(group: string, id: string): Promise<Heartbeat> {
-    return await this.heartbeatModel.remove({
-      group: group,
-      id: id,
-    });
+    try {
+      return await this.heartbeatModel.remove({
+        group: group,
+        id: id,
+      });
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === 'P2025') {
+          throw new NotFoundException(
+            `heartbeat in group: ${group} with ID: ${id} not found`,
+          );
+        }
+      }
+      throw err;
+    }
   }
 }
