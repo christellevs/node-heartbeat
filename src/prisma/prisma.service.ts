@@ -7,7 +7,7 @@ export class PrismaService extends PrismaClient {
     super({
       datasources: {
         db: {
-          url: 'postgresql://postgres:123456@localhost:5434/nest?schema=public', // TODO add env rather than hardcode
+          url: 'mongodb://cooluser:123456@localhost:27017/mongonest', // TODO add env rather than hardcode
         },
       },
     });
