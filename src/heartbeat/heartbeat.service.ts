@@ -65,12 +65,14 @@ export class HeartbeatService {
           const firstHeartbeat = await this.findFirstHeartbeat(group);
           const latestHeartbeat = await this.findLatestHeartbeat(group);
 
-          return {
-            group: group,
-            instances: instances.toString(),
-            createdAt: firstHeartbeat.map((beat) => beat.createdAt)[0],
-            lastUpdatedAt: latestHeartbeat.map((beat) => beat.updatedAt)[0],
-          };
+          if (instances > 0) {
+            return {
+              group: group,
+              instances: instances.toString(),
+              createdAt: firstHeartbeat.map((beat) => beat.createdAt)[0],
+              lastUpdatedAt: latestHeartbeat.map((beat) => beat.updatedAt)[0],
+            };
+          }
         }),
       );
       return result;
