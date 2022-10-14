@@ -20,20 +20,22 @@ Although I didn't accurately time the challenge, overall I'd estimate I took aro
 ### Other tools
 
 - Postman (for making api calls)
+- [Swagger](http://localhost:3000/api) docs added (accessed when local server is running)
 
 This repository was created with NestJS
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-### Notes
+### Notes & Considerations
 
-- UNIX timestamp vs DateTime:
-  - I've taken the liberty to rather than using a UNIX timestamp, to use a DateTime object type in Mongo instead to faciliate use cases such as setting up an expiry field for automatic deletion after a certain amount of time in MongoDB.
 - `.env` file
   - In a real world project I would not expose the database password. However since this will only be used locally, I've simplified it and created two Mongo database, one for testing and one for production, which can be accesse by any ip address.
+- UNIX timestamp vs DateTime:
+  - I've taken the liberty to rather than using a UNIX timestamp, to use a DateTime object type in Mongo instead. This was to faciliate use cases such as setting up an expiry field for automatic deletion after a certain amount of time in MongoDB.
 - Expiry time of last `updatedAt`
   - I've set this to 1 minute for testing purposes. On a real world project, depending on the use case the expiry time would likely be higher, e.g. 1h or more.
+- Improving folder structure
 
-### Other options
+  - Due to the project not having a lot of entities I've simplified folder structure, and encompassed the `group` summary and logic into the `heartbeat` folder. For a more scalable solution/real world case, I would add these to separate folders.
 
 - Prisma VS Mongoose
   - I considered and tried using Prisma for creating the database schemas, as I have used in the past with SQL database such as PostgreSQL, however I found that in the case for using MongoDB, Mongoose worked better at this moment in time.
