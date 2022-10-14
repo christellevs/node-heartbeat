@@ -2,13 +2,13 @@
 
 This is the final solution for the UBIO tech challenge.
 
-The priginal README.md is provided at the end.
+The original README.md is provided at the end.
 
-Thank you for sharing this challenge, and for opportunity to join the team. I had a lot of fun developing this!
+Thank you for sharing this challenge, and for opportunity to join the team. I had a lot of fun trying to solve this!
 
 ### Development time
 
-Although I didn't accurately time the challenge, overall I'd estimate I took around 12 hours to complete this project.
+Although I didn't accurately time the challenge, overall I'd estimate I took around 10 hours to complete this project.
 
 ### Frameworks Used:
 
@@ -29,16 +29,22 @@ This repository was created with NestJS
 - UNIX timestamp vs DateTime:
   - I've taken the liberty to rather than using a UNIX timestamp, to use a DateTime object type in Mongo instead to faciliate use cases such as setting up an expiry field for automatic deletion after a certain amount of time in MongoDB.
 - `.env` file
-  - In a real world project I would not expose the database password. However since this will only be used locally, I've simplified it and created a Mongo database which can be accessedby any ip address.
+  - In a real world project I would not expose the database password. However since this will only be used locally, I've simplified it and created two Mongo database, one for testing and one for production, which can be accesse by any ip address.
 - Expiry time of last `updatedAt`
-  - I've set this to 1 minute for testing purposes. On a real world project, depending on the use case the expiry time would likely be higher.
+  - I've set this to 1 minute for testing purposes. On a real world project, depending on the use case the expiry time would likely be higher, e.g. 1h or more.
+
+### Other options
+
+- Prisma VS Mongoose
+  - I considered and tried using Prisma for creating the database schemas, as I have used in the past with SQL database such as PostgreSQL, however I found that in the case for using MongoDB, Mongoose worked better at this moment in time.
 
 ## Set up environment
 
 Create a `.env` file at the root of the project and add:
 
 ```bash
-DATABASE_URL="mongodb+srv://cooluser:coolpassword@node-heartbeat.p1yr3un.mongodb.net/%3FretryWrites=true&w=majority"
+PROD_DB_URL="mongodb+srv://cooluser:coolpassword@node-heartbeat.p1yr3un.mongodb.net/%3FretryWrites=true&w=majority"
+TEST_DB_URL="mongodb+srv://testcooldb:testcooldbpassword@cluster0.p6ue95j.mongodb.net/?retryWrites=true&w=majority"
 ```
 
 ## Installation
