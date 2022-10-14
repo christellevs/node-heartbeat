@@ -5,11 +5,15 @@ import { AppService } from './app.service';
 describe('AppController', () => {
   let appController: AppController;
 
+  const mockAppService = {};
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
       providers: [AppService],
-    }).compile();
+    })
+      .overrideProvider(AppService)
+      .useValue(mockAppService)
+      .compile();
 
     appController = app.get<AppController>(AppController);
   });
