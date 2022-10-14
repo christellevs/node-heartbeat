@@ -17,6 +17,8 @@ Although I didn't accurately time the challenge, overall I'd estimate I took aro
 - Mongoose
 - Jest
 
+I've implemented both unit tests and e2e testing for the api endpoint.
+
 ### Other tools
 
 - Postman (for making api calls)
