@@ -8,7 +8,7 @@ import { HeartbeatModule } from './heartbeat/heartbeat.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRoot(process.env.DATABASE_URL),
+    MongooseModule.forRoot(process.env.PROD_DB_URL),
     HeartbeatModule,
   ],
   controllers: [AppController],
