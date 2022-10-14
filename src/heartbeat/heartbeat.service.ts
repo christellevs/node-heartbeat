@@ -12,7 +12,7 @@ export class HeartbeatService {
     @InjectModel('Heartbeat') private readonly heartbeatModel: Model<Heartbeat>,
   ) {}
 
-  public async findAllByGroup(group): Promise<Heartbeat[]> {
+  public async findAllByGroup(group: string): Promise<Heartbeat[]> {
     return await this.heartbeatModel.find({ group: group });
   }
 
